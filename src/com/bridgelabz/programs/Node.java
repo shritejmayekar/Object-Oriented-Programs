@@ -1,5 +1,5 @@
 package com.bridgelabz.programs;
-;
+
 
 public class Node {
 	int value;

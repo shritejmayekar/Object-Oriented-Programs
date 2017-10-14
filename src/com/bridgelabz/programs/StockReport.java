@@ -1,38 +1,51 @@
+/******************************************************************************
+ *  
+ *  Purpose: To add stocks in .json file and also value of each stock and 
+ *  			total value of all stocks
+ *  			
+ *  		
+ *  			
+ *  			
+ *  @author  Shritej
+ *  @version 1.0
+ *  @since   12-10-2017
+ *
+ ******************************************************************************/
 package com.bridgelabz.programs;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+import org.json.simple.parser.ParseException;
+
+import com.bridgelabz.util.StockPortfolio;
 
 public class StockReport {
-// Stock Names, Number of Share, Share Price. Print a Stock Report with total value of each Stock and the total value of Stock.
-	public  int numberOfShare,totalValueOfStock,totalValue;
-	public  int  sharePrice;
-	public  String  stockName;
-	public  void addStock() throws IOException {
-		Scanner scanner=new Scanner(System.in);
-		System.out.print("please enter the stock name:");
-		stockName=scanner.next();
-		System.out.println("please enter the number of share");
-		numberOfShare=scanner.nextInt();
-		System.out.println("price of share");
-		sharePrice=scanner.nextInt();
-		File file=new File("stockreport.txt");
-		if(file.createNewFile())
-			System.out.println("file created");
-		else
-			System.out.println("file is exits");
-		FileWriter fileWriter=new FileWriter(file);
-		fileWriter.write(stockName+" "+numberOfShare+" "+sharePrice);
-		fileWriter.close();
-	}
+
+	static Scanner scanner=new Scanner(System.in);
+	public static void main(String[] args) throws IOException, ParseException {
+		StockPortfolio stockPortfolio=new StockPortfolio();
+		while(true) {
+			System.out.println("Menu\n1.Add stocks\n2.Dispalay report\n3.exit");
+			switch (scanner.nextInt()) {
+			case 1:
+					stockPortfolio.addStock();
+				break;
+			case 2:
+					stockPortfolio.stockReports();
+				break;
+			case 3:System.exit(0);
+					break;
+
+			default:
+				break;
+			}
+			
+			
+			
+			
+		}
+
 	
-	public static void main(String[] args) throws IOException {
-		StockReport stockReport1=new StockReport();
-		StockReport stockReport2=new StockReport();
-		stockReport1.addStock();
-		stockReport2.addStock();
 	}
 
 }
