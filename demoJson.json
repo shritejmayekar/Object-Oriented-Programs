@@ -1,1 +1,1 @@
-{"rice":[{"quantity":5,"price":3,"name":"sham"},{"quantity":3,"price":2,"name":"tal"}]}
+{"inventory":[{"quantity":5,"price":60,"name":"rice"},{"quantity":6,"price":60,"name":"pulses"},{"quantity":6,"price":2,"name":"wheat"}]}

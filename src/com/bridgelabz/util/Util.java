@@ -153,7 +153,7 @@ public class Util {
 	public static void inventory() throws IOException {
 		JSONObject inventory=new JSONObject();
 		Scanner scanner=new Scanner(System.in);
-			System.out.println("please eneter size:");
+			System.out.println("please enter size:");
 			JSONArray product=new JSONArray();
 			int sizeOf=scanner.nextInt();
 			

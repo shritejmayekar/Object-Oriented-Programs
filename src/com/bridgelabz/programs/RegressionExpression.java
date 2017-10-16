@@ -12,11 +12,15 @@
  ******************************************************************************/
 package com.bridgelabz.programs;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Scanner;
 
 public class RegressionExpression {
 	public static String name,fullname;
-	public static String contactNumber;
+	public static String contactNumber,date;
 	
 	
 	static Scanner scanner=new Scanner(System.in);
@@ -32,13 +36,13 @@ public class RegressionExpression {
 		System.out.println("Enter contact number:");
 		contactNumber=scanner.next();
 
-		java.util.Date date=new java.util.Date();  
-		System.out.println(date);  
-		
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+		Date today = Calendar.getInstance().getTime(); 
+		date=df.format(today);  
 		template=template.replaceAll("<<name>>", name);
 		template=template.replaceAll("<<full name>>", fullname);
 		template=template.replaceAll("xxxxxxxxxx", contactNumber);
-		//template=template.replace("01/01/2016",date);
+		template=template.replaceAll("01/01/2016",date);
 		System.out.println(template);
 	}
 }
