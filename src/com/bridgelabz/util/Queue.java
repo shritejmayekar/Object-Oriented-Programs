@@ -89,5 +89,11 @@ public class Queue<E> {
         size--;
         return temporary.data;
     }
+    public boolean isEmpty() {
+    	if(front==null) {
+    		return true;
+    	}
+    	return false;
+    }
     
 }

@@ -32,18 +32,18 @@ public class Util {
 		
 	
 	
-	int col=randomGeneratorColumn();
-	int row=randomGeneratorRow();
-	if(cards[row][col]==""){
+	int column=randomGeneratorColumn();
+	int rows=randomGeneratorRow();
+	if(cards[rows][column]==""){
 		cardShuffle();
 		return;
 	}
 		
-		System.out.print("["+suit[row]+" ");
-		System.out.print(cards[row][col]+"]");
-		savecard[row][col]=col+1;
+		System.out.print("["+suit[rows]+" ");
+		System.out.print(cards[rows][column]+"]");
+		savecard[rows][column]=column+1;
 		
-		cards[row][col]="";
+		cards[rows][column]="";
 		
 		
 	}
@@ -54,18 +54,18 @@ public class Util {
 			
 		
 		
-		int col=randomGeneratorColumn();
-		int row=randomGeneratorRow();
-		if(cards[row][col]==""){
+		int column=randomGeneratorColumn();
+		int rows=randomGeneratorRow();
+		if(cards[rows][column]==""){
 			cardShuffle();
 			return;
 		}
 			
 			//System.out.print("["+suit[row]+" ");
 			//System.out.print(cards[row][col]+"]");
-			savecard[row][col]=col+1;
+			savecard[rows][column]=column+1;
 			
-			cards[row][col]="";
+			cards[rows][column]="";
 			
 			
 		}
@@ -90,7 +90,7 @@ public class Util {
 	 * showCarsSorted method will sort cards according to ranks
 	 */
 		public  void showCardrank() {
-			int k=0;
+			int counter=0;
 			for (int i = 0; i < 4; i++) {
 				for (int j = 0; j < 13; j++) {
 					if(savecard[i][j]!=0) {
@@ -103,11 +103,11 @@ public class Util {
 				}
 				System.out.println();
 			}
-			while(k<4) {
+			while(counter<4) {
 				System.out.println("\n1.want card remove\n2.exit");
 				switch(scanner.nextInt()) {
 				case 1:System.out.print(queue.Dequee());
-					k++;
+					counter++;
 					break;
 				case 2:System.exit(0);
 					break;
@@ -151,13 +151,13 @@ public class Util {
  * @throws IOException
  */
 	public static void inventory() throws IOException {
-		JSONObject inventory=new JSONObject();
+		JSONObject jsonInventory=new JSONObject();
 		Scanner scanner=new Scanner(System.in);
-			System.out.println("please enter size:");
-			JSONArray product=new JSONArray();
-			int sizeOf=scanner.nextInt();
+			System.out.println("please enter size of Inventory:");
+			JSONArray jsonProductArray=new JSONArray();
+			int sizeOfInventory=scanner.nextInt();
 			
-			for(int size=0;size<sizeOf;size++) {
+			for(int size=0;size<sizeOfInventory;size++) {
 				JSONObject jsonObject=new JSONObject();
 				System.out.println("enter the name");
 				jsonObject.put("name", scanner.next());
@@ -166,12 +166,12 @@ public class Util {
 				System.out.println("enter the price");
 				
 				jsonObject.put("price", scanner.nextInt());
-				product.add(jsonObject);
+				jsonProductArray.add(jsonObject);
 			}
 		
-		inventory.put("inventory", product);
+		jsonInventory.put("inventory",jsonProductArray);
 		FileWriter fileWriter=new FileWriter("demoJson.json");
-		fileWriter.write(inventory.toString());
+		fileWriter.write(jsonInventory.toString());
 		System.out.println();
 		fileWriter.close();
 	
@@ -192,9 +192,9 @@ public class Util {
 		
 		JSONObject object=(JSONObject) jsonParser.parse(new FileReader("demoJson.json"));
 	
-		JSONArray jsonArray2= (JSONArray) object.get("inventory");
-		for(int i=0;i<jsonArray2.size();i++) {
-			jsonObject=(JSONObject) jsonArray2.get(i);
+		JSONArray jsonArray= (JSONArray) object.get("inventory");
+		for(int i=0;i<jsonArray.size();i++) {
+			jsonObject=(JSONObject) jsonArray.get(i);
 			getPrice= jsonObject.get("price");
 			getQuatitity= jsonObject.get("quantity");
 			getTotal=(long)getPrice*(long)getQuatitity;

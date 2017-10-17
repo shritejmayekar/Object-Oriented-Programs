@@ -16,6 +16,7 @@ public class StockAccount {
 	public static String filename;
 	static long totalValue;
 	static long eachStock;
+	static StockAccount stock;
 	static Scanner scanner=new Scanner(System.in);
 	public StockAccount() {
 		
@@ -35,16 +36,13 @@ public class StockAccount {
 		JSONObject stocks=new JSONObject();
 		JSONArray shares=new JSONArray();
 		
-		System.out.print("Please eneter the no. of stocks:");
-		int numberOfStock = scanner.nextInt();
 		
-		for(int i=0;i<numberOfStock;i++) {
+		
 			JSONObject jsonObject=new JSONObject();
 			
-			System.out.print("please enter the stock name:");
-			String stockName = scanner.next();
 			
-			jsonObject.put("stockName", stockName);
+			
+			jsonObject.put("stockName", filename);
 			
 			System.out.print("please enter the number of share:");
 			int numberOfShare = scanner.nextInt();
@@ -58,7 +56,7 @@ public class StockAccount {
 			
 			
 			shares.add(jsonObject);
-		}
+		
 		stocks.put("shares",shares);
 		FileWriter fileWriter=new FileWriter(filename);
 		fileWriter.write(stocks.toJSONString());
@@ -89,6 +87,10 @@ public class StockAccount {
 			if(jsonObject.get("stockName").equals(symbol)) {
 				long priceOfShare= valueOfEachStock(jsonObject.get("numberOfShare"),jsonObject.get("sharePrice"));
 				System.out.println("price of each share:"+jsonObject.get("sharePrice"));
+				if(priceOfShare<amount){
+					System.out.println("not enough shares to sell");
+					return;
+				}
 			
 				long numberOf=(long) jsonObject.get("numberOfShare");
 				long priceOfEach=(long) jsonObject.get("sharePrice");
@@ -119,35 +121,44 @@ public class StockAccount {
 		
 	}
 	public void buy(int amount,String symbol) throws IOException, ParseException {
+		long numberOfSharePrevious=0,numberOf=0;
 		JSONParser jsonParser=new JSONParser();
 		JSONObject jsonObject=new JSONObject();
 		
-		
+		JSONObject symobolObject=(JSONObject) jsonParser.parse(new FileReader(symbol));
 		JSONObject object=(JSONObject) jsonParser.parse(new FileReader(filename));
 	
 		JSONArray jsonArray2= (JSONArray) object.get("shares");
+		JSONArray jsonArrayForSymbol=(JSONArray) symobolObject.get("shares");
+		for(int j=0;j<jsonArrayForSymbol.size();j++) {
+			jsonObject=(JSONObject) jsonArrayForSymbol.get(j);
+			if(jsonObject.get("stockName").equals(filename)) {
+				numberOfSharePrevious=(long) jsonObject.get("numberOfShare");
+				break;
+			}
+		}
+		
+		
 		for(int i=0;i<jsonArray2.size();i++) {
 			jsonObject= (JSONObject) jsonArray2.get(i);
 			if(jsonObject.get("stockName").equals(symbol)) {
 				long priceOfShare= valueOfEachStock(jsonObject.get("numberOfShare"),jsonObject.get("sharePrice"));
 				System.out.println("price of each share:"+jsonObject.get("sharePrice"));
-			
-				long numberOf=(long) jsonObject.get("numberOfShare");
+				long numberOfShareBefore=(long) jsonObject.get("numberOfShare");
+				 numberOf=(long) jsonObject.get("numberOfShare");
 				long priceOfEach=(long) jsonObject.get("sharePrice");
-			//total=quantity*price;
-			//(total+x)/price=quantity;
 			
-				numberOf=(priceOfShare+amount)/priceOfEach;
+				numberOf=amount/priceOfEach;
 				
 				JSONObject jsonObject2=new JSONObject();
 
-				jsonObject.replace("numberOfShare",numberOf);
+				jsonObject.replace("numberOfShare",numberOfShareBefore-numberOf);
 				JSONObject stocks=new JSONObject();
 				JSONArray shares=new JSONArray();
 				shares.add(jsonObject);
 				stocks.put("shares",shares);
 				
-				FileWriter fileWriter=new FileWriter(filename);
+				FileWriter fileWriter=new FileWriter(symbol);
 				fileWriter.write(stocks.toJSONString());
 				fileWriter.close();
 				totalValue=0;
@@ -157,7 +168,17 @@ public class StockAccount {
 				
 		
 			}
+			jsonObject.replace("numberOfShare",numberOfSharePrevious+numberOf);
+			JSONObject stocks=new JSONObject();
+			JSONArray shares=new JSONArray();
+			shares.add(jsonObject);
+			stocks.put("shares",shares);
+			
+			FileWriter fileWriter=new FileWriter(filename);
+			fileWriter.write(stocks.toJSONString());
+			fileWriter.close();
 		}
+		
 		
 	}
 	public void save(String filename) {
@@ -186,15 +207,55 @@ public class StockAccount {
 		
 	
 	public static void main(String[] args) throws FileNotFoundException, IOException, ParseException {
-		filename="stock.json";
-		StockAccount st=new StockAccount(filename);
-		st.printReport();
-		st.buy(200,"tata");
-		st.printReport();
-		st.sell(200, "tata");
-		st.printReport();
+				filename="stock.json";
+		
+		System.out.println("Please enter the filename below \n1.NSE\n2.Nifty\n3.Sensex\n4.create new");
+		switch (scanner.nextInt()) {
+		case 1:System.out.println("NSE");
+				filename="NSE.json";
+				stock=new StockAccount();
+				
+			
+			break;
+		case 2:System.out.println("Nifty");
+				filename="Nifty.json";
+				stock=new StockAccount();
+		break;
+		case 3:System.out.println("Nifty");
+		filename="Sensex.json";
+		stock=new StockAccount();
+		break;
+		case 4:System.out.println("create new");
+				filename=scanner.next();
+				stock=new StockAccount(filename);
+		break;
+		
+		default:System.out.println("invalid");
+			break;
+		}
+		
+		
+			
+			
+	
+		stock.printReport();
 		while(true) {
-			System.out.println("\n1.Create file\n2.buy stocks\n3.printreport\n4.sell stock\n5.exit");
+			System.out.println("\n1.buy stocks\n2.sell\n3.stock report\n4.exit");
+			switch (scanner.nextInt()) {
+				case 1:System.out.println("Enter the amount and sysmbol");
+						stock.buy(scanner.nextInt(), scanner.next());				
+				break;
+				case 2:	System.out.println("Enter the amount and symbol");
+						stock.sell(scanner.nextLong(), scanner.next());
+				break;
+				case 3:	System.out.println("stock report");
+						stock.printReport();
+				break;
+				case 4:System.exit(0);
+				break;
+			default:
+				break;
+			}
 		}
 	}
 
