@@ -1,16 +1,4 @@
-/******************************************************************************
- *  Compilation:  javac -d . com/bridgelabz/util/Queue.java
- *  
- *  Purpose: To give functionalities for object oriented programs
- *  			
- *  		
- *  			
- *  			
- *  @author  Shritej
- *  @version 1.0
- *  @since   12-10-2017
- *
- ******************************************************************************/
+
 package com.bridgelabz.util;
 
 
@@ -29,9 +17,28 @@ class NodeQueue<E> {
         link=l;
     }
 }
+/******************************************************************************
+ *
+ *  Compilation:  javac -d . com/bridgelabz/util/Queue.java
+ *  
+ *  Purpose: To give functionalities for object oriented programs
+ *  			
+ *  		
+ *  			
+ *  			
+ *  @author  Shritej
+ *  @version 1.0
+ *  @since   12-10-2017
+ *	
+ *
+ ******************************************************************************/
 /**
-*	Generic type Queue  
-*/
+ * 
+ *Generic type Queue  
+ *
+ * @param <E>
+ */
+
 public class Queue<E> {
     NodeQueue front,rear;
     public int size;

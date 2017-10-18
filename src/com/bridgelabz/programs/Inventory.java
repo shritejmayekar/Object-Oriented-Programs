@@ -28,22 +28,22 @@ public class Inventory {
 		while(true) {
 			System.out.println("\nMenu\n1.File create\n2.Inventory\n3.Display\n4.exit");
 			switch(scanner.nextInt()) {
-				case 1:Util.fileCreate();
-					break;
-				case 2:Util.inventory();
-					break;
-				case 3:Util.display();
-					break;
-				case 4:System.exit(0);
-					break;
-				default:System.out.println("invalid");
-					break;
-					
-			
+			case 1:Util.fileCreate();
+			break;
+			case 2:Util.inventory();
+			break;
+			case 3:Util.display();
+			break;
+			case 4:System.exit(0);
+			break;
+			default:System.out.println("invalid");
+			break;
+
+
 			}
-			
+
 		}
-		
+
 	}
 
 }

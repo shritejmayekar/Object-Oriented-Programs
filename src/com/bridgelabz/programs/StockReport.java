@@ -28,24 +28,24 @@ public class StockReport {
 			System.out.println("Menu\n1.Add stocks\n2.Dispalay report\n3.exit");
 			switch (scanner.nextInt()) {
 			case 1:
-					stockPortfolio.addStock();
+				stockPortfolio.addStock();
 				break;
 			case 2:
-					stockPortfolio.stockReports();
+				stockPortfolio.stockReports();
 				break;
 			case 3:System.exit(0);
-					break;
+			break;
 
 			default:
 				break;
 			}
-			
-			
-			
-			
+
+
+
+
 		}
 
-	
+
 	}
 
 }

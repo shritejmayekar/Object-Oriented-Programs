@@ -5,6 +5,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -12,7 +16,14 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
+/********************************************************************************
+ * Purpose : Different static methods to implement different tasks like cardShuffle
+ * 				and file create ,etc
+ * @author Shritej
+ * @version 1.0
+ * @since 8-10-2017
+ *********************************************************************************
+ */
 public class Util {
 	public static int i,j;
 	public static Object value, getPrice,getQuatitity,getTotal;
@@ -202,5 +213,23 @@ public class Util {
 		
 		}
 		
+	}
+/**
+ * regrex method will replace content matching  the pattern
+ * @param template
+ * @param name
+ * @param fullname
+ * @param contactNumber
+ * @param date
+ */
+	public static void regrex(String template,String name,String fullname,String contactNumber,String date) {
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+		Date today = Calendar.getInstance().getTime(); 
+		date=dateFormat.format(today);  
+		template=template.replaceAll("<<name>>", name);
+		template=template.replaceAll("<<full name>>", fullname);
+		template=template.replaceAll("xxxxxxxxxx", contactNumber);
+		template=template.replaceAll("01/01/2016",date);
+		System.out.println(template);
 	}
 }

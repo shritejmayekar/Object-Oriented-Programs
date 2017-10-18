@@ -1,5 +1,5 @@
 /******************************************************************************
- 
+
  *  
  *  Purpose: To add stock ,compute total value of stock and display report
  *  			
@@ -33,39 +33,39 @@ public class StockPortfolio {
 	public  void addStock() throws IOException {
 		JSONObject stocks=new JSONObject();
 		JSONArray shares=new JSONArray();
-		
+
 		System.out.print("Please eneter the no. of stocks:");
 		numberOfStock=scanner.nextInt();
-		
+
 		for(int i=0;i<numberOfStock;i++) {
 			JSONObject jsonObject=new JSONObject();
-			
+
 			System.out.print("please enter the stock name:");
 			stockName=scanner.next();
-			
+
 			jsonObject.put("stockName", stockName);
-			
+
 			System.out.print("please enter the number of share:");
 			numberOfShare=scanner.nextInt();
-			
+
 			jsonObject.put("numberOfShare", numberOfShare);
-			
+
 			System.out.print("price of share:");
 			sharePrice=scanner.nextInt();
-			
+
 			jsonObject.put("sharePrice", sharePrice);
-			
-			
+
+
 			shares.add(jsonObject);
 		}
 		stocks.put("shares",shares);
 		FileWriter fileWriter=new FileWriter("stockreport.json");
 		fileWriter.write(stocks.toJSONString());
 		fileWriter.close();
-	
+
 	}
 	public static long valueOfEachStock(Object numberOfShare,Object sharePrice) {
-		
+
 		return (long)sharePrice*(long)numberOfShare;
 	}
 	public static void valueOfTotalStock(Object sharePrice) {
@@ -74,12 +74,12 @@ public class StockPortfolio {
 	public void stockReports() throws FileNotFoundException, IOException, ParseException {
 		JSONParser jsonParser=new JSONParser();
 		JSONObject jsonObject=new JSONObject();
-		
+
 		value=jsonParser.parse(new FileReader("stockreport.json"));
 		System.out.println(value);
-		
+
 		JSONObject object=(JSONObject) jsonParser.parse(new FileReader("stockreport.json"));
-	
+
 		JSONArray jsonArray2= (JSONArray) object.get("shares");
 		for(int i=0;i<jsonArray2.size();i++) {
 			jsonObject=(JSONObject) jsonArray2.get(i);
@@ -89,8 +89,8 @@ public class StockPortfolio {
 			valueOfTotalStock(eachStock);
 		}
 		System.out.println("Total stock value="+totalValue);
-		
+
 	}
-	
+
 
 }
