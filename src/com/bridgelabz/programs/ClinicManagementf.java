@@ -43,7 +43,7 @@ public class ClinicManagementf {
 			jsonObject.put("doctorSpecialist",scanner.next());
 			System.out.print("Enter the doctor 's Availaibility:");
 			jsonObject.put("doctorAvail",scanner.next());
-			jsonObject.put("doctorAppointment", new Integer(0));
+			jsonObject.put("doctorAppointment",0);
 			doctors.add(jsonObject);
 		}
 		clinic.put("clinic", doctors);
@@ -85,13 +85,16 @@ public class ClinicManagementf {
 			if(jsonObject.get("doctorName").equals(parameterMatch)) {
 				doctorAvail= jsonObject.get("doctorAppointment");
 				long doctorFlagSet= (long) doctorAvail;
-				if(doctorFlagSet<6l) {
+				if(doctorFlagSet<6) {
 					
-					Object count=doctorFlagSet+1;
+					long count= (doctorFlagSet+1);
 					jsonObject.replace("doctorAppointment", count);
 					jsonArray2.add(jsonObject);
 					jsonObject.put("clinic", jsonArray2);
-					 
+					FileWriter fileWriter=new FileWriter("clinicManagement.json");
+					fileWriter.write(jsonObject.toString());
+					fileWriter.close();
+					System.out.println();
 					break;
 				}
 				System.out.println(doctorName+" "+doctorId+" "+doctorSpecialist+" "+doctorAvail);
@@ -106,7 +109,7 @@ public class ClinicManagementf {
 		ClinicManagementf clinicManagementf=new ClinicManagementf();
 		clinicManagementf.fileCreate();
 		clinicManagementf.addDoctor();
-		//clinicManagementf.doctorDisplay();
+		clinicManagementf.doctorDisplay();
 		clinicManagementf.doctorAppointment();
 		clinicManagementf.doctorDisplay();
 	}
