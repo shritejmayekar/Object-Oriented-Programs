@@ -1,5 +1,6 @@
 package com.bridgelabz.programs;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -41,16 +42,17 @@ public class InventoryFactory {
 
 		JSONObject inventory=new JSONObject();
 
-
+		
 		Scanner scanner=new Scanner(System.in);
 		System.out.println("please enter size of Inventory:");
 
 		int sizeOf=scanner.nextInt();
-
+		BufferedReader bufferedReader=new BufferedReader(new FileReader("/home/bridgeit/shritej/inventoryfactory.json"));
+		if(bufferedReader.readLine()==null) {
 		for(int size=0;size<sizeOf;size++) {
 
 			JSONObject jsonObject=new JSONObject();
-			System.out.println("enter the name");
+			System.out.println("enter the name of inventory");
 			jsonObject.put("name", scanner.next());
 			System.out.println("enter the quantity");
 			jsonObject.put("quantity", scanner.nextInt());
@@ -61,6 +63,30 @@ public class InventoryFactory {
 		}
 
 		inventory.put("inventory", product);
+		}
+		else {
+			
+			JSONObject jsonObject=new JSONObject();
+			
+			JSONParser jParser=new JSONParser();
+			jsonObject=(JSONObject) jParser.parse(new FileReader("/home/bridgeit/shritej/inventoryfactory.json"));
+			JSONArray jsonArray=(JSONArray) jsonObject.get("inventory");
+			for(int size=0;size<sizeOf;size++) {
+
+				JSONObject jsonObjectGet=new JSONObject();
+				System.out.println("enter the name of inventory");
+				jsonObjectGet.put("name", scanner.next());
+				System.out.println("enter the quantity");
+				jsonObjectGet.put("quantity", scanner.nextInt());
+				System.out.println("enter the price");
+
+				jsonObjectGet.put("price", scanner.nextInt());
+				jsonArray.add(jsonObjectGet);
+			
+			}
+			inventory.put("inventory",jsonArray);
+
+		}
 
 		FileWriter fileWriter=new FileWriter("/home/bridgeit/shritej/inventoryfactory.json");
 		fileWriter.write(inventory.toString());
