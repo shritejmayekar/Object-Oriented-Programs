@@ -80,8 +80,10 @@ public class AddressBook {
 				jsonObject.put("state", state);
 				jsonObject.put("zip", zip);
 				jsonObject.put("mobile", mobile);
+
 				jsonArray.add(jsonObject);
 				jsonObjectMain.put("addressBook", jsonArray);
+
 				FileWriter fileWriter=new FileWriter("addressBook.json");
 				fileWriter.write(jsonObjectMain.toString());
 				fileWriter.close();
@@ -94,16 +96,16 @@ public class AddressBook {
 				jsonObjectGet=(JSONObject) jsonParser.parse(new FileReader("addressBook.json"));
 				JSONArray jsonArrayy=(JSONArray) jsonObjectGet.get("addressBook");
 
-				JSONObject jsonObject2=new JSONObject();
-				jsonObject2.put("firstName", firstName);
-				jsonObject2.put("lastName", lastName);
-				jsonObject2.put("address", address);
-				jsonObject2.put("city", city);
-				jsonObject2.put("state", state);
-				jsonObject2.put("zip", zip);
-				jsonObject2.put("mobile", mobile);
-				System.out.println(jsonObject2);
-				jsonArrayy.add(jsonObject2);
+				JSONObject jsonObject2Put=new JSONObject();
+				jsonObject2Put.put("firstName", firstName);
+				jsonObject2Put.put("lastName", lastName);
+				jsonObject2Put.put("address", address);
+				jsonObject2Put.put("city", city);
+				jsonObject2Put.put("state", state);
+				jsonObject2Put.put("zip", zip);
+				jsonObject2Put.put("mobile", mobile);
+				System.out.println(jsonObject2Put);
+				jsonArrayy.add(jsonObject2Put);
 				jsonObjectMain.put("addressBook", jsonArrayy);
 				FileWriter fileWriter=new FileWriter("addressBook.json",false);
 				fileWriter.write(jsonObjectMain.toString());
@@ -168,6 +170,10 @@ public class AddressBook {
 		String personInfo[]={firstName,lastName,address,city,state,zip,mobile};
 		return personInfo;
 	}
+	/**
+	 * getTitle of book
+	 * @return
+	 */
 	public String getTitle() {
 		return "addressBook";
 	}
@@ -292,9 +298,10 @@ public class AddressBook {
 				FileWriter fileWriter=new FileWriter("addressBook.json");
 				fileWriter.write(addressBookObject.toJSONString());
 				fileWriter.close();
+				size--;
 			}
-			}
-		
+		}
+
 	}
 	/**
 	 * search method will search the person by name and gives basic information
@@ -304,6 +311,7 @@ public class AddressBook {
 	 * @throws ParseException
 	 */
 	public void search(String firstName) throws FileNotFoundException, IOException, ParseException {
+		boolean flag=false;
 		JSONParser jsonParser=new JSONParser();
 		JSONArray jaArrayForReplace=new JSONArray();
 		JSONObject addressBookObject=new JSONObject();
@@ -318,9 +326,12 @@ public class AddressBook {
 				mobile=(String) jsonObject.get("mobile");
 				address=(String) jsonObject.get("address");
 				city=(String) jsonObject.get("city");
-				System.out.println(firstName+" "+lastName+" "+" "+mobile+" "+address+" "+city);
+				System.out.println("\nFound person\n"+firstName+" "+lastName+" "+" "+mobile+" "+address+" "+city);
+				flag=true;
 			}
 		}
+		if(flag==false)
+			System.out.println("Name not found");
 
 	}
 	/**
@@ -336,20 +347,90 @@ public class AddressBook {
 		System.out.println(value);
 		JSONParser jsonParser2=new JSONParser();
 		JSONObject jsonObject=(JSONObject) jsonParser2.parse(new FileReader("addressBook.json"));
-	}
-	public void sort() throws FileNotFoundException, IOException, ParseException {
-		JSONParser jsonParser=new JSONParser();
-		JSONArray jaArrayForReplace=new JSONArray();
-		JSONObject addressBookObject=new JSONObject();
-		JSONObject object=(JSONObject) jsonParser.parse(new FileReader("addressBook.json"));
-		JSONArray jsonArray= (JSONArray) object.get("addressBook");
-		JSONObject jsonObject=new JSONObject();
+		JSONArray jsonArray=(JSONArray) jsonObject.get("addressBook");
 		for (int i = 0; i < jsonArray.size(); i++) {
-			jsonObject=(JSONObject) jsonArray.get(i);
-			if(jsonObject.get("firstName").equals(firstName)) {
-				
-			}
+			JSONObject jsonObject2=new JSONObject();
+			jsonObject2=(JSONObject) jsonArray.get(i);
+
+			firstName=(String) jsonObject2.get("firstName");
+			lastName=(String) jsonObject2.get("lastName");
+			mobile=(String) jsonObject2.get("mobile");
+			address=(String) jsonObject2.get("address");
+			city=(String) jsonObject2.get("city");
+			System.out.println(firstName+" "+lastName+" "+" "+mobile+" "+address+" "+city);
+
 		}
+	}
+	/**
+	 * sortByName method will sort address Book according to Name in ascending order
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws ParseException
+	 */
+	public void sortByName() throws FileNotFoundException, IOException, ParseException {
+		JSONParser jsonParser=new JSONParser();
+		JSONObject addressBookObject=(JSONObject) jsonParser.parse(new FileReader("addressBook.json"));
+		JSONArray jsonArray= (JSONArray) addressBookObject.get("addressBook");
+
+		//using bubble sort to sort names
+		for (int i = 0; i < jsonArray.size(); i++) {
+
+			for (int j = i+1; j < jsonArray.size(); j++) {
+				JSONObject jsonObjectWordOne=(JSONObject) jsonArray.get(i);
+				JSONObject jsonObjectWordTwo=(JSONObject) jsonArray.get(j);
+
+				String stringOne=(String) jsonObjectWordOne.get("firstName");
+
+				String stringTwo=(String) jsonObjectWordTwo.get("firstName");
+
+				if(stringOne.compareToIgnoreCase(stringTwo)>0) {
+					jsonArray.set(i, jsonObjectWordTwo);
+					jsonArray.set(j, jsonObjectWordOne);
+				}
+
+			}
+
+		}
+		addressBookObject.put("addressBook", jsonArray);
+		FileWriter fileWriter=new FileWriter("addressBook.json");
+		fileWriter.write(addressBookObject.toJSONString());
+		fileWriter.close();
+	}
+	/**
+	 * sortByZip method will sort addressBook according to Zip in ascending order
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws ParseException
+	 */
+	public void sortByZip() throws FileNotFoundException, IOException, ParseException {
+		JSONParser jsonParser=new JSONParser();
+		JSONObject addressBookObject=(JSONObject) jsonParser.parse(new FileReader("addressBook.json"));
+		JSONArray jsonArray= (JSONArray) addressBookObject.get("addressBook");
+
+		//using bubble sort to sort
+		for (int i = 0; i < jsonArray.size(); i++) {
+
+			for (int j = i+1; j < jsonArray.size(); j++) {
+				//getting first and second zip of array
+				JSONObject jsonObjectWordOne=(JSONObject) jsonArray.get(i);
+				JSONObject jsonObjectWordTwo=(JSONObject) jsonArray.get(j);
+
+				String stringOne=(String) jsonObjectWordOne.get("zip");
+
+				String stringTwo=(String) jsonObjectWordTwo.get("zip");
+				//comparing values
+				if(stringOne.compareToIgnoreCase(stringTwo)>0) {
+					jsonArray.set(i, jsonObjectWordTwo);
+					jsonArray.set(j, jsonObjectWordOne);
+				}
+
+			}
+
+		}
+		addressBookObject.put("addressBook", jsonArray);
+		FileWriter fileWriter=new FileWriter("addressBook.json");
+		fileWriter.write(addressBookObject.toJSONString());
+		fileWriter.close();
 	}
 	/**
 	 * main method will able to display menu for addressBook
@@ -362,36 +443,48 @@ public class AddressBook {
 		AddressBook addressBook=new AddressBook();
 		while(true) {
 			System.out.println("\nMenu \n1.addPerson\n2.getPullnameOfPerson\n3.getOtherInformation\n4.getTitle"
-					+ "\n5.print\n6.Edit\n7.Search\n8.Delete");
+					+ "\n5.print\n6.Edit\n7.Search\n8.Delete\n9.SortByName\n10.sortByzip");
 			switch (scanner.nextInt()) {
-			
+
 			case 1:	System.out.println("please enter first name,last name,address,city,state,pincode and mobile number:");
-					addressBook.addPerson(scanner.next(), scanner.next(), scanner.next(), scanner.next(), scanner.next(), scanner.next(), scanner.next());
+			addressBook.addPerson(scanner.next(),
+					scanner.next(), scanner.next(), scanner.next(),
+					scanner.next(), scanner.next(), scanner.next());
 
-					break;
+			break;
 			case 2:	System.out.println("please enter index");
-					System.out.println("Full name:"+addressBook.getFullNameOfPerson(scanner.nextInt()));
+			System.out.println("Full name:"+addressBook.getFullNameOfPerson(scanner.nextInt()));
 
-					break;
+			break;
 			case 3:	System.out.println("please enter index");
-					String personInfo[]=addressBook.getOtherPersonInformation(scanner.nextInt());
-					System.out.println("Others Information");
-					for(String person:personInfo)
-						System.out.print(person+" ");
+			String personInfo[]=addressBook.getOtherPersonInformation(scanner.nextInt());
+			System.out.println("Others Information");
+			for(String person:personInfo)
+				System.out.print(person+" ");
 
-					break;
+			break;
+			case 4:System.out.println("title:"+addressBook.getTitle());
+			break;
 			case 5:addressBook.print();
-				break;
+			break;
 			case 6:addressBook.editBook();
-				break;
+			break;
 			case 7:	System.out.println("Please enter firstname to search");
-					addressBook.search(scanner.next());
-					break;
+			addressBook.search(scanner.next());
+			break;
 			case 8: System.out.println("please enter the name to delete");
-					addressBook.delete(scanner.next());
-					break;
-			default:
-				break;
+			addressBook.delete(scanner.next());
+			break;
+			case 9:System.out.println("sorted by name");
+			addressBook.sortByName();
+			addressBook.print();
+			break;
+			case 10:System.out.println("sorted by zip");
+			addressBook.sortByZip();
+			addressBook.print();
+			break;
+			default:System.out.println("Inavalid");
+			break;
 			}
 		}
 

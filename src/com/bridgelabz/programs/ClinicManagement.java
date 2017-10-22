@@ -1,11 +1,15 @@
 package com.bridgelabz.programs;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream.GetField;
 import java.util.Scanner;
+
+import javax.xml.crypto.Data;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -31,17 +35,37 @@ public class ClinicManagement {
 	 * @throws IOException
 	 */
 	public void FileCreate() throws IOException {
-		File file=new File("clinicManagement.json");
-		if(file.createNewFile())
-			System.out.println("File created successfully");
+		File fileDoctor=new File("clinicManagement.json");
+		File filePatient=new File("clinicManagementPatient.json");
+		File fileAppointment=new File("clinicManagementAppointment.json");
+		File filePopular=new File("clinicPopular.json");
+		//file created for doctor
+		if(fileDoctor.createNewFile())
+			System.out.println("File created successfully for doctor");
 		else
 			System.out.println("File exist");
+		//file created for patient
+		if(filePatient.createNewFile())
+			System.out.println("File created successfully for patient");
+		else
+			System.out.println("File exist");
+		//file created for patient-doctor appointment
+		if(fileAppointment.createNewFile())
+			System.out.println("File created successfully for Appointment");
+		else
+			System.out.println("File exist");
+		//file created for popular doctor
+		if(filePopular.createNewFile())
+			System.out.println("File created successfully for popular doctor");
+		else
+			System.out.println("File exist");
+
 	}
 	/**
 	 * doctors method will add doctor record to json file
 	 * @throws IOException
 	 */
-	public void doctors() throws IOException {
+	public void addDoctors() throws IOException {
 		JSONObject clinic=new JSONObject();
 		JSONArray doctors=new JSONArray();
 		Scanner scanner=new Scanner(System.in);
@@ -57,7 +81,7 @@ public class ClinicManagement {
 			jsonObject.put("doctorSpecialist",scanner.next());
 			System.out.print("Enter the doctor 's Availaibility:");
 			jsonObject.put("doctorAvail",scanner.next());
-			jsonObject.put("doctorAppointment", 0);
+			jsonObject.put("doctorAppointment", 5);
 			doctors.add(jsonObject);
 		}
 		clinic.put("clinic", doctors);
@@ -67,12 +91,12 @@ public class ClinicManagement {
 		System.out.println();
 	}
 	/**
-	 * display method will display values of all doctors
+	 * displayDoctor method will display values of all doctors
 	 * @throws ParseException
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	public void display() throws ParseException, FileNotFoundException, IOException {
+	public void displayDoctor() throws ParseException, FileNotFoundException, IOException {
 		JSONParser jsonParser=new JSONParser();
 		JSONObject jsonObject=new JSONObject();
 
@@ -115,12 +139,12 @@ public class ClinicManagement {
 
 	}
 	/**
-	 * search method will search the doctors by name,availability, specialization and Id.
+	 * searchDoctor method will search the doctors by name,availability, specialization and Id.
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	public void search() throws FileNotFoundException, IOException, ParseException {
+	public void searchDoctor() throws FileNotFoundException, IOException, ParseException {
 		System.out.println("Please Search Doctor by\n1.Name\n2.Id\n3.Specialization\n4.Availiability");
 		JSONParser jsonParser=new JSONParser();
 		JSONObject jsonObject=new JSONObject();
@@ -196,7 +220,12 @@ public class ClinicManagement {
 		}
 
 	}
-	public void patient() throws IOException, ParseException {
+	/**
+	 * 
+	 * @throws IOException
+	 * @throws ParseException
+	 */
+	public void addPatient() throws IOException, ParseException {
 		JSONObject clinic=new JSONObject();
 		JSONArray patients=new JSONArray();
 		Scanner scanner=new Scanner(System.in);
@@ -255,7 +284,38 @@ public class ClinicManagement {
 
 
 		break;
+		case 2:System.out.println("Please enter patient Id:");
+		parameterMatch=scanner.next();
+		for(int i=0;i<jsonArray2.size();i++) {
+			jsonObject=(JSONObject) jsonArray2.get(i);
 
+			if(jsonObject.get("patientId").equals(parameterMatch)) {
+				patientName = (String) jsonObject.get("patientName");
+				patientId= jsonObject.get("patientId");
+				patientNumber= jsonObject.get("patientMobile");
+				patientAge=(long) jsonObject.get("patientAge");
+				System.out.println(patientName+" "+patientId+" "+patientNumber+" "+patientAge);
+
+			}
+		}
+
+
+		break;
+		case 3:System.out.println("Please enter patient mobile number:");
+		parameterMatch=scanner.next();
+		for(int i=0;i<jsonArray2.size();i++) {
+			jsonObject=(JSONObject) jsonArray2.get(i);
+
+			if(jsonObject.get("patientMobile").equals(parameterMatch)) {
+				patientName = (String) jsonObject.get("patientName");
+				patientId= jsonObject.get("patientId");
+				patientNumber= jsonObject.get("patientMobile");
+				patientAge=(long) jsonObject.get("patientAge");
+				System.out.println(patientName+" "+patientId+" "+patientNumber+" "+patientAge);
+
+			}
+		}
+		break;
 
 		default:System.out.println("invalid input");
 		break;
@@ -263,63 +323,133 @@ public class ClinicManagement {
 
 
 	}
+	/**
+	 * doctorsAppointment method makes appoitnment of doctors for patients
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	public  void doctorsAppointment() throws FileNotFoundException, IOException, ParseException {
 		System.out.println("Please enter the doctor name to take appointment:");
 		doctorName=scanner.next();
-		if(isAppointmentFull( doctorName)) {
-			System.out.println("Appointment is Full\nCheck For tomorrow ");
-
-
-		}
-		else
-		{
-			System.out.println("Appointment success");
-			//ClinicManagement clc=new ClinicManagement();
-			//clc.search();
-		}
-
-
-	}
-	public boolean isAppointmentFull(Object doctornName) throws FileNotFoundException, IOException, ParseException {
 		JSONParser jsonParser=new JSONParser();
 		JSONObject jsonObject=new JSONObject();
+		JSONArray jaArrayForReplace=new JSONArray();
 		JSONObject object=(JSONObject) jsonParser.parse(new FileReader("clinicManagement.json"));
 		JSONArray jsonArray2= (JSONArray) object.get("clinic");
 		for(int i=0;i<jsonArray2.size();i++) {
 			jsonObject=(JSONObject) jsonArray2.get(i);
-			if(doctornName.equals(jsonObject.get("doctorName"))) {
-				doctorAvail= jsonObject.get("doctorAvail");
-				if(doctorAvail.equals(5)) {
-					return true;
+			if(doctorName.equals(jsonObject.get("doctorName"))) {
+				doctorAvail= jsonObject.get("doctorAppointment");
+				if((long)doctorAvail==0) {
+					System.out.println("Doctor's Appointment is full");
 
 				}
 				else {
-					/*jsonObject.put("doctorAvail",doctorAvail++);
 
-					clinic.put("clinic", patients);
-					FileWriter fileWriter=new FileWriter("clinicManagementPatient.json");
-					fileWriter.write(clinic.toString());
-					fileWriter.close();*/
+					doctorAppointmentList(jsonObject.get("doctorName"),jsonObject.get("doctorAvail"));
+
+
+					jsonObject.replace("doctorAppointment",(long)doctorAvail-1);
+					jaArrayForReplace.add(jsonObject);
+					JSONObject jsonObject2=new JSONObject();
+					jsonObject2.put("clinic", jaArrayForReplace);
+					jsonObject2.put("clinic", jsonArray2);
+					System.out.println("Doctors appointment success");
+					FileWriter fileWriter=new FileWriter("clinicManagement.json");
+					fileWriter.write(jsonObject2.toJSONString());
+					fileWriter.close();
+					break;
 				}
-
 			}
 		}
-		return false;
+
 
 	}
+	/**
+	 * doctorAppointmentList method will make list of doctor assigned and patient as record
+	 * @param doctorName
+	 * @param shift
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws ParseException
+	 */
+	public void doctorAppointmentList(Object doctorName,Object shift) throws FileNotFoundException, IOException, ParseException {
+		JSONParser jsonParser2=new JSONParser();
+		JSONArray jsonArray=new JSONArray();
+		JSONObject jsonObjectAppointment=new JSONObject();
+		JSONObject jsonObjectMain=new JSONObject();
 
+
+		JSONObject jsonObjectSetData=new JSONObject();
+		BufferedReader bufferedReader = new BufferedReader(new FileReader("clinicManagementAppointment.json"));
+		if(bufferedReader.readLine()==null) {
+			bufferedReader.close();
+			System.out.print("please enter your name:");
+			jsonObjectSetData.put("patientName",scanner.next());
+			jsonObjectSetData.put("doctorName",doctorName);
+			jsonObjectSetData.put("doctorShifts",shift);
+			jsonArray.add(jsonObjectSetData);
+			jsonObjectMain.put("clinic", jsonArray);
+			FileWriter fileWriterAppointment=new FileWriter("clinicManagementAppointment.json",false);
+			fileWriterAppointment.write(jsonObjectMain.toString());
+			fileWriterAppointment.close();
+
+
+		}
+		else {
+
+			jsonObjectAppointment=(JSONObject) jsonParser2.parse(new FileReader("clinicManagementAppointment.json"));
+			jsonArray=(JSONArray) jsonObjectAppointment.get("clinic");
+			System.out.print("please enter your name:");
+			jsonObjectSetData.put("patientName",scanner.next() );
+			jsonObjectSetData.put("doctorName",doctorName);
+			jsonObjectSetData.put("doctorShifts",shift);
+			jsonArray.add(jsonObjectSetData);
+
+			jsonObjectMain.put("clinic", jsonArray);
+			FileWriter fileWriterAppointment=new FileWriter("clinicManagementAppointment.json",false);
+			fileWriterAppointment.write(jsonObjectMain.toString());
+			fileWriterAppointment.close();
+		}
+
+	}
 	public static void main(String[] args) throws IOException, ParseException {
 		ClinicManagement clinicManagement=new ClinicManagement();
 		clinicManagement.FileCreate();
-		//clinicManagement.doctors();
-		clinicManagement.display();
-		//clinicManagement.patient();
-		//clinicManagement.displayPatient();
-		while(true)
-			//	clinicManagement.search();
-			clinicManagement.doctorsAppointment();
-		//clinicManagement.searchPatient();
 
+		while(true) {
+			System.out.print("\nMenu\n1.Add doctors\n2.dispay doctor\n3.Add patient\n4.display patient"
+					+ "\n5.search doctor\n6.take doctor appointment\n7.search patient");
+			switch (scanner.nextInt()) {
+			case 1:System.out.println("please enter doctors schedule for today");
+			clinicManagement.addDoctors();
+			break;
+			case 2:System.out.println("display doctor");
+			clinicManagement.displayDoctor();
+			break;
+			case 3:System.out.println("add patients information");
+			clinicManagement.addPatient();
+			break;
+			case 4:System.out.println("display patients");
+			clinicManagement.displayPatient();
+			break;
+			case 5:System.out.println("search doctor");
+			clinicManagement.searchDoctor();
+			break;
+			case 6:System.out.println("take doctors appointment");
+			clinicManagement.doctorsAppointment();
+			break;
+			case 7:System.out.println("search patient");
+			clinicManagement.searchPatient();
+			break;
+
+			default:System.out.print("invalid");
+			break;
+			}
+
+
+		}
 	}
 
 }
