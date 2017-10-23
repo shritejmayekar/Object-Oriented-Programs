@@ -5,12 +5,20 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Scanner;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import com.bridgelabz.util.List;
+import com.bridgelabz.util.Queue;
+import com.bridgelabz.util.Stack;
 /***********************************************************************
  * Purpose: To 
  * 
@@ -21,18 +29,21 @@ import org.json.simple.parser.ParseException;
  */
 public class StockAccount2 {
 	/*Declaration of variables */
-	public static String filename;
+	public static String filename,userFile,brokerFile,dateTime;
 	static long totalValue;
 	static long eachStock;
 	static StockAccount stock;
 	static Scanner scanner=new Scanner(System.in);
-/**
- * Account method will create user and broker file
- * @param filename
- * @throws FileNotFoundException
- * @throws IOException
- * @throws ParseException
- */
+	static List<String> list=new List<>();
+	static Stack<String> stack=new Stack<>();
+	static Queue<String> queue=new Queue<>();
+	/**
+	 * Account method will create user and broker file
+	 * @param filename
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	public void Account(String filename) throws FileNotFoundException, IOException, ParseException {
 		File file=new File(filename);
 		try {
@@ -66,7 +77,12 @@ public class StockAccount2 {
 
 		jsonObject.put("sharePrice", sharePrice);
 
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+		Date today = Calendar.getInstance().getTime(); 
+		dateTime= dateFormat.format(today);
+		jsonObject.put("dateTime",dateTime);
 
+		jsonObject.put("transactionType", "none");
 		shares.add(jsonObject);
 
 		stocks.put("shares",shares);
@@ -75,43 +91,44 @@ public class StockAccount2 {
 		fileWriter.close();
 
 	}
-/**
- * valueOfEachStock method will give total of number of share and shareprice
- * @param numberOfShare
- * @param sharePrice
- * @return total amount
- */
+	/**
+	 * valueOfEachStock method will give total of number of share and shareprice
+	 * @param numberOfShare
+	 * @param sharePrice
+	 * @return total amount
+	 */
 	public static long valueOfEachStock(Object numberOfShare,Object sharePrice) {
 
 		return (long)sharePrice*(long)numberOfShare;
 	}
-/**
- * valueOfstock will calculates users and broker total amount
- * @param sharePrice
- */
+	/**
+	 * valueOfstock will calculates users and broker total amount
+	 * @param sharePrice
+	 */
 	public static void valueOfTotalStock(Object sharePrice) {
 		totalValue=(long)sharePrice+totalValue;
 	}
-/**
- * valueOf method returns totalValue
- * @return
- */
+	/**
+	 * valueOf method returns totalValue
+	 * @return
+	 */
 	public double valueOf() {
-		return totalValue;
+		return totalValue*68;
 	}
-/**
- * sell method will sell user sales to broker
- * @param amount
- * @param symbol
- * @throws FileNotFoundException
- * @throws IOException
- * @throws ParseException
- * 
- */
+	/**
+	 * sell method will sell user sales to broker
+	 * @param amount
+	 * @param symbol
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws ParseException
+	 * 
+	 */
 	public void sell(int amount,String broker,String user) throws IOException, ParseException {
 		long numberOfSharePrevious=0,numberOf=0;
 		JSONParser jsonParser=new JSONParser();
 		JSONObject jsonObject=new JSONObject();
+		JSONObject jsonObject2Put=new JSONObject();
 		//JSON Objects of broker and user
 		JSONObject brokerObject=(JSONObject) jsonParser.parse(new FileReader(broker));
 		JSONObject userobject=(JSONObject) jsonParser.parse(new FileReader(user));
@@ -123,6 +140,7 @@ public class StockAccount2 {
 
 		for(int i=0;i<jsonArrayForBroker.size();i++) {
 			jsonObject= (JSONObject) jsonArrayForBroker.get(i);
+			jsonObject2Put= (JSONObject) jsonArrayUser.get(i);
 			if(jsonObject.get("stockName").equals(broker)) {
 				long priceOfShare= valueOfEachStock(jsonObject.get("numberOfShare"),jsonObject.get("sharePrice"));
 				System.out.println("price of each share:"+jsonObject.get("sharePrice"));
@@ -131,8 +149,20 @@ public class StockAccount2 {
 				long priceOfEach=(long) jsonObject.get("sharePrice");
 
 				numberOf=amount/priceOfEach;
+				if(amount>priceOfShare) {
+					System.out.println("impossible");
+					return;
+				}
 
 				JSONObject jsonObject2=new JSONObject();
+				DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+				Date today = Calendar.getInstance().getTime(); 
+				dateTime= dateFormat.format(today);
+				jsonObject.replace("dateTime",dateTime);
+				jsonObject.replace("transactionType", "buy");
+				list.insertAtEnd(broker);
+				stack.push("buy");
+				queue.Enqueue(dateTime);
 
 				jsonObject.replace("numberOfShare",numberOfShareBefore+numberOf);
 				JSONObject stocks=new JSONObject();
@@ -160,6 +190,15 @@ public class StockAccount2 {
 				if(jsonObject2.get("stockName").equals(user)) {
 					numberOfSharePrevious=(long) jsonObject2.get("numberOfShare");
 					System.out.println(jsonObject2);
+					DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+					Date today = Calendar.getInstance().getTime(); 
+					dateTime= dateFormat.format(today);
+					jsonObject2.replace("dateTime",dateTime);
+					jsonObject2.replace("transactionType", "sell");
+					list.insertAtEnd(user);
+					stack.push("sell");
+					queue.Enqueue(dateTime);
+
 					jsonObject2.replace("numberOfShare",numberOfSharePrevious-numberOf);
 					JSONObject stocks=new JSONObject();
 					JSONArray shares=new JSONArray();
@@ -178,14 +217,14 @@ public class StockAccount2 {
 
 
 	}
-/**
- * buy method will buy user shares from broker
- * @param amount
- * @param broker
- * @param user
- * @throws IOException
- * @throws ParseException
- */
+	/**
+	 * buy method will buy user shares from broker
+	 * @param amount
+	 * @param broker
+	 * @param user
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	public void buy(int amount,String broker,String user) throws IOException, ParseException {
 		long numberOfSharePrevious=0,numberOf=0;
 		JSONParser jsonParser=new JSONParser();
@@ -209,8 +248,20 @@ public class StockAccount2 {
 				long priceOfEach=(long) jsonObject.get("sharePrice");
 
 				numberOf=amount/priceOfEach;
-
+				if(amount>priceOfShare&&numberOf>0) {
+					System.out.println("imposibble");
+					return;
+				}
 				JSONObject jsonObject2=new JSONObject();
+
+				DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+				Date today = Calendar.getInstance().getTime(); 
+				dateTime= dateFormat.format(today);
+				jsonObject.replace("dateTime",dateTime);
+				jsonObject.replace("transactionType", "sell");
+				list.insertAtEnd(broker);
+				stack.push("sell");
+				queue.Enqueue(dateTime);
 
 				jsonObject.replace("numberOfShare",numberOfShareBefore-numberOf);
 				JSONObject stocks=new JSONObject();
@@ -238,6 +289,16 @@ public class StockAccount2 {
 				if(jsonObject2.get("stockName").equals(user)) {
 					numberOfSharePrevious=(long) jsonObject2.get("numberOfShare");
 					System.out.println(jsonObject2);
+
+					DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+					Date today = Calendar.getInstance().getTime(); 
+					dateTime= dateFormat.format(today);
+					jsonObject2.replace("dateTime",dateTime);
+					jsonObject2.replace("transactionType", "buy");
+					list.insertAtEnd(user);
+					stack.push("buy");
+					queue.Enqueue(dateTime);
+
 					jsonObject2.replace("numberOfShare",numberOfSharePrevious+numberOf);
 					JSONObject stocks=new JSONObject();
 					JSONArray shares=new JSONArray();
@@ -259,13 +320,13 @@ public class StockAccount2 {
 	public void save(String filename) {
 
 	}
-/**
- * printReport method will print user as well as broker share report
- * @param filename
- * @throws FileNotFoundException
- * @throws IOException
- * @throws ParseException
- */
+	/**
+	 * printReport method will print user as well as broker share report
+	 * @param filename
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	public void printReport(String filename) throws FileNotFoundException, IOException, ParseException  {
 		JSONParser jsonParser=new JSONParser();
 		JSONObject jsonObject=new JSONObject();
@@ -283,38 +344,51 @@ public class StockAccount2 {
 					+ "Each stock value ="+eachStock);
 			valueOfTotalStock(eachStock);
 		}
-		System.out.println("Total stock value="+totalValue);
+		//System.out.println("Total stock value="+totalValue);
 
 	}
 
 
 	public static void main(String[] args) throws FileNotFoundException, IOException, ParseException {
 		StockAccount2 stockAccount2=new StockAccount2();
+		userFile="user.json";
+		brokerFile="broker.json";
 		while(true) {
 			System.out.println("\nMenu \n1.Account create\n2.Print Report\n3.buy share\n4.sell share"
-					+ "\n5.exit\n");
+					+ "\n5.exit\n6.view List\n7.view Stack\n8.view queue\n");
 			switch (scanner.nextInt()) {
 			case 1:	System.out.println("Account Creation");
-					System.out.println("please enter filename with .json as extension");
-					stockAccount2.Account(scanner.next());
-				
-				break;
+			System.out.println("please enter filename with .json as extension");
+			stockAccount2.Account(userFile);
+			stockAccount2.Account(brokerFile);
+
+			break;
 			case 2:System.out.println("Print report");
-					System.out.println("please enter filename with .json as extension");
-					stockAccount2.printReport(scanner.next());
-					break;
+			System.out.println("please enter filename user/broker");
+			filename=scanner.next();
+			if(filename.equals("user"))		
+				stockAccount2.printReport(userFile);
+			else
+				stockAccount2.printReport(brokerFile);
+			break;
 			case 3:System.out.println("buy share");
-					System.out.println("Please enter tha amt broker file name and user file name");
-					stockAccount2.buy(scanner.nextInt(),scanner.next(),scanner.next());
-					break;
+			System.out.println("Please enter tha amount to buy share");
+			stockAccount2.buy(scanner.nextInt(),brokerFile,userFile);
+			break;
 			case 4:	System.out.println("sell share");
-					System.out.println("Please enter tha amt broker file name and user file name");
-					stockAccount2.buy(scanner.nextInt(),scanner.next(),scanner.next());
-					break;
+			System.out.println("Please enter tha amount to sell share");
+			stockAccount2.sell(scanner.nextInt(),brokerFile,userFile);
+			break;
 			case 5:System.exit(0);
-					break;
+			break;
+			case 6:list.display();
+			break;
+			case 7:stack.display();
+			break;
+			case 8:queue.display();
+			break;
 			default:System.out.println("invalid");
-				break;
+			break;
 			}
 		}
 	}

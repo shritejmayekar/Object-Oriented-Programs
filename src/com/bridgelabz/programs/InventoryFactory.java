@@ -12,7 +12,13 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
+/**
+ * Purpose: To do implement main inventory factory methods 
+ * @author shritej
+ * @version 1.0
+ * @since 17-10-2017
+ *
+ */
 public class InventoryFactory {
 
 	/**
