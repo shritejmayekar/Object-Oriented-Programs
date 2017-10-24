@@ -6,8 +6,13 @@ package com.bridgelabz.util;
  *	NodeQueue Class to create the object reference 
  */
 class NodeQueue<E> {
+<<<<<<< HEAD
 	public E data;
 	public NodeQueue link;
+=======
+	E data;
+	NodeQueue link;
+>>>>>>> 45c374d8e4e6167f3ece8285e3fff1e38e8f1453
 	NodeQueue() {
 		//data=0;
 		link=null;
@@ -40,7 +45,11 @@ class NodeQueue<E> {
  */
 
 public class Queue<E> {
+<<<<<<< HEAD
 	public NodeQueue front,rear;
+=======
+	NodeQueue front,rear;
+>>>>>>> 45c374d8e4e6167f3ece8285e3fff1e38e8f1453
 	public int size;
 	public Queue() {
 		front=rear=null;
@@ -97,7 +106,14 @@ public class Queue<E> {
 		return temporary.data;
 	}
 	public boolean isEmpty() {
+<<<<<<< HEAD
 		return (front==null);
+=======
+		if(front==null) {
+			return true;
+		}
+		return false;
+>>>>>>> 45c374d8e4e6167f3ece8285e3fff1e38e8f1453
 	}
 
 }

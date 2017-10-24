@@ -1,7 +1,21 @@
 package com.bridgelabz.programs;
 
+<<<<<<< HEAD
 import java.io.IOException;
 import java.util.Scanner;
+=======
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+>>>>>>> 45c374d8e4e6167f3ece8285e3fff1e38e8f1453
 import org.json.simple.parser.ParseException;
 
 import com.bridgelabz.util.Util;

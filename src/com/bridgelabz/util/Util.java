@@ -94,7 +94,11 @@ public class Util {
 	 * showCarsSorted method will sort cards according to ranks
 	 */
 	public  void showCardrank() {
+<<<<<<< HEAD
 		
+=======
+		int counter=0;
+>>>>>>> 45c374d8e4e6167f3ece8285e3fff1e38e8f1453
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 13; j++) {
 				if(savecard[i][j]!=0) {
@@ -115,9 +119,15 @@ public class Util {
 			queue.Dequee();
 		/*System.out.print(queue.Dequee());*/
 
+<<<<<<< HEAD
 		
 		break;
 		case 2:
+=======
+		counter++;
+		break;
+		case 2:System.exit(0);
+>>>>>>> 45c374d8e4e6167f3ece8285e3fff1e38e8f1453
 		break;
 		default:System.out.println("invalid");
 		break;
@@ -1004,6 +1014,11 @@ public class Util {
 	public void search(String firstName) throws FileNotFoundException, IOException, ParseException {
 		boolean flag=false;
 		JSONParser jsonParser=new JSONParser();
+<<<<<<< HEAD
+=======
+		JSONArray jaArrayForReplace=new JSONArray();
+		JSONObject addressBookObject=new JSONObject();
+>>>>>>> 45c374d8e4e6167f3ece8285e3fff1e38e8f1453
 		JSONObject object=(JSONObject) jsonParser.parse(new FileReader("addressBook.json"));
 		JSONArray jsonArray= (JSONArray) object.get("addressBook");
 		JSONObject jsonObject=new JSONObject();
