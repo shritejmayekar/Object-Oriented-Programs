@@ -22,7 +22,7 @@ import com.bridgelabz.util.Util;
  *
  */
 public class AddressBook {
-	static Scanner scanner=new Scanner(System.in);
+	public static Scanner scanner=new Scanner(System.in);
 
 	/**
 	 * main method will able to display menu for addressBook

@@ -337,13 +337,14 @@ public class Util {
 		System.out.println(value);
 		JSONObject object=(JSONObject) jsonParser.parse(new FileReader("clinicManagement.json"));
 		JSONArray jsonArray2= (JSONArray) object.get("clinic");
+		System.out.println("\n|DoctorName|DoctorId|Specilialist|DoctorAvailable|");
 		for(int i=0;i<jsonArray2.size();i++) {
 			jsonObject=(JSONObject) jsonArray2.get(i);
 			doctorName=  jsonObject.get("doctorName");
 			doctorId=  jsonObject.get("doctorId");
 			doctorSpecialist=  jsonObject.get("doctorSpecialist");
 			doctorAvail= jsonObject.get("doctorAvail");
-			System.out.println(doctorName+" "+doctorId+" "+doctorSpecialist+" "+doctorAvail);
+			System.out.println("\t"+doctorName+"\t"+doctorId+"\t"+doctorSpecialist+"\t"+doctorAvail);
 		}
 
 	}
@@ -361,13 +362,14 @@ public class Util {
 		System.out.println(value);
 		JSONObject object=(JSONObject) jsonParser.parse(new FileReader("clinicManagementPatient.json"));
 		JSONArray jsonArray2= (JSONArray) object.get("clinic");
+		System.out.println("\n|PatientName|patientId|patientNumber|patientAge|");
 		for(int i=0;i<jsonArray2.size();i++) {
 			jsonObject=(JSONObject) jsonArray2.get(i);
 			patientName= jsonObject.get("patientName");
 			patientId=  jsonObject.get("patientId");
 			patientNumber=  jsonObject.get("patientMobile");
 			patientAge=jsonObject.get("patientAge");
-			System.out.println(patientName+" "+patientId+" "+patientNumber+" "+patientAge);
+			System.out.println("\t"+patientName+"\t"+patientId+"\t"+patientNumber+"\t"+patientAge);
 		}
 
 	}
@@ -673,6 +675,11 @@ public class Util {
 		}
 
 	}
+	/**
+	 * addRecord method add patient records if not present
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	public void addRecord() throws IOException, ParseException {
 		System.out.println("Is Your new patient true/false");
 		if(scanner.nextBoolean())

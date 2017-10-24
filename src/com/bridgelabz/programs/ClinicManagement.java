@@ -26,7 +26,7 @@ import com.bridgelabz.util.Util;
  ***********************************************************************************************
  */
 public class ClinicManagement {
-	static Scanner scanner=new Scanner(System.in);
+	public static Scanner scanner=new Scanner(System.in);
 	public static void main(String[] args) throws IOException, ParseException {
 		Util clinicManagement=new Util();
 		clinicManagement.FileCreate();

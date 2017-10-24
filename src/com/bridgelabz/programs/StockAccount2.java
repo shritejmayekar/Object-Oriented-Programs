@@ -32,10 +32,10 @@ public class StockAccount2 {
 	public static String filename,userFile,brokerFile,dateTime;
 	static long totalValue;
 	static long eachStock;
-	static StockAccount stock;
+	static StockAccount2 stock;
 	static Scanner scanner=new Scanner(System.in);
 	static List<String> list=new List<>();
-	static Stack<String> stack=new Stack<>();
+	static Stack<Long> stack=new Stack<>();
 	static Queue<String> queue=new Queue<>();
 	/**
 	 * Account method will create user and broker file
@@ -136,8 +136,6 @@ public class StockAccount2 {
 		JSONArray jsonArrayUser= (JSONArray) userobject.get("shares");
 		JSONArray jsonArrayForBroker=(JSONArray)brokerObject.get("shares");
 
-
-
 		for(int i=0;i<jsonArrayForBroker.size();i++) {
 			jsonObject= (JSONObject) jsonArrayForBroker.get(i);
 			jsonObject2Put= (JSONObject) jsonArrayUser.get(i);
@@ -161,7 +159,9 @@ public class StockAccount2 {
 				jsonObject.replace("dateTime",dateTime);
 				jsonObject.replace("transactionType", "buy");
 				list.insertAtEnd(broker);
-				stack.push("buy");
+				list.insertAtEnd("buy");
+				list.insertAtEnd(dateTime);
+				stack.push(numberOf);
 				queue.Enqueue(dateTime);
 
 				jsonObject.replace("numberOfShare",numberOfShareBefore+numberOf);
@@ -174,11 +174,6 @@ public class StockAccount2 {
 				fileWriter.write(stocks.toJSONString());
 				fileWriter.close();
 				totalValue=0;
-
-
-
-
-
 			}
 			else {
 				System.out.println("file not found");
@@ -196,7 +191,9 @@ public class StockAccount2 {
 					jsonObject2.replace("dateTime",dateTime);
 					jsonObject2.replace("transactionType", "sell");
 					list.insertAtEnd(user);
-					stack.push("sell");
+					list.insertAtEnd("sell");
+					list.insertAtEnd(dateTime);
+					stack.push(numberOf);
 					queue.Enqueue(dateTime);
 
 					jsonObject2.replace("numberOfShare",numberOfSharePrevious-numberOf);
@@ -211,11 +208,7 @@ public class StockAccount2 {
 					break;
 				}
 			}
-
-
 		}
-
-
 	}
 	/**
 	 * buy method will buy user shares from broker
@@ -235,8 +228,6 @@ public class StockAccount2 {
 		//JSON Array of broker and user
 		JSONArray jsonArrayUser= (JSONArray) userobject.get("shares");
 		JSONArray jsonArrayForBroker=(JSONArray)brokerObject.get("shares");
-
-
 
 		for(int i=0;i<jsonArrayForBroker.size();i++) {
 			jsonObject= (JSONObject) jsonArrayForBroker.get(i);
@@ -260,7 +251,9 @@ public class StockAccount2 {
 				jsonObject.replace("dateTime",dateTime);
 				jsonObject.replace("transactionType", "sell");
 				list.insertAtEnd(broker);
-				stack.push("sell");
+				list.insertAtEnd("sell");
+				list.insertAtEnd(dateTime);
+				stack.push(numberOf);
 				queue.Enqueue(dateTime);
 
 				jsonObject.replace("numberOfShare",numberOfShareBefore-numberOf);
@@ -273,10 +266,6 @@ public class StockAccount2 {
 				fileWriter.write(stocks.toJSONString());
 				fileWriter.close();
 				totalValue=0;
-
-
-
-
 
 			}
 			else {
@@ -296,7 +285,9 @@ public class StockAccount2 {
 					jsonObject2.replace("dateTime",dateTime);
 					jsonObject2.replace("transactionType", "buy");
 					list.insertAtEnd(user);
-					stack.push("buy");
+					list.insertAtEnd("buy");
+					list.insertAtEnd(dateTime);
+					stack.push(numberOf);
 					queue.Enqueue(dateTime);
 
 					jsonObject2.replace("numberOfShare",numberOfSharePrevious+numberOf);
@@ -311,11 +302,7 @@ public class StockAccount2 {
 					break;
 				}
 			}
-
-
 		}
-
-
 	}
 	public void save(String filename) {
 
@@ -344,11 +331,7 @@ public class StockAccount2 {
 					+ "Each stock value ="+eachStock);
 			valueOfTotalStock(eachStock);
 		}
-		//System.out.println("Total stock value="+totalValue);
-
 	}
-
-
 	public static void main(String[] args) throws FileNotFoundException, IOException, ParseException {
 		StockAccount2 stockAccount2=new StockAccount2();
 		userFile="user.json";
