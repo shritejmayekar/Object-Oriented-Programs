@@ -14,8 +14,8 @@ import com.bridgelabz.util.Util;
  *
  **************************************************************************************/
 public class InventoryManagement {
-	static Scanner scanner=new Scanner(System.in);
-	static int k;
+	public static Scanner scanner=new Scanner(System.in);
+	public static int k;
 	public static void main(String[] args) throws IOException, ParseException {
 
 		InventoryFactory inventoryFactory=new InventoryFactory();

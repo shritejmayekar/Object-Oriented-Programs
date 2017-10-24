@@ -30,13 +30,13 @@ import com.bridgelabz.util.Stack;
 public class StockAccount2 {
 	/*Declaration of variables */
 	public static String filename,userFile,brokerFile,dateTime;
-	static long totalValue;
-	static long eachStock;
-	static StockAccount2 stock;
-	static Scanner scanner=new Scanner(System.in);
-	static List<String> list=new List<>();
-	static Stack<Long> stack=new Stack<>();
-	static Queue<String> queue=new Queue<>();
+	public static long totalValue;
+	public static long eachStock;
+	public static StockAccount2 stock;
+	public static Scanner scanner=new Scanner(System.in);
+	public static List<String> list=new List<>();
+	public static Stack<Long> stack=new Stack<>();
+	public static Queue<String> queue=new Queue<>();
 	/**
 	 * Account method will create user and broker file
 	 * @param filename

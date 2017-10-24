@@ -28,23 +28,23 @@ import org.json.simple.parser.ParseException;
 public class Util {
 	//Declaration
 	public static int i,j;
-	String firstName,lastName,address,city,state,zip,mobile,title;
-	static int size;
-	static Scanner scanner=new Scanner(System.in);
-	static Object doctorName,doctorSpecialist, doctorId;
-	static Object doctorAvail;
-	static Object patientName;
-	static Object patientId,patientNumber,patientAge;
+	public String firstName,lastName,address,city,state,zip,mobile,title;
+	public	static int size;
+	public static Scanner scanner=new Scanner(System.in);
+	public static Object doctorName,doctorSpecialist, doctorId;
+	public	static Object doctorAvail;
+	public	static Object patientName;
+	public	static Object patientId,patientNumber,patientAge;
 	public static Object value, getPrice,getQuatitity,getTotal;
 	static 	int [][] savecard=new int[4][13];
 	public static String [] suit={"Clubs","Diamonds","Hearts","Spades"};
 	public static String[] rank={"2","3","4","5","6","7","8","9","10","Jack", "Queen", "King", "Ace"};
-	static String[][] cards={{"2","3","4","5","6","7","8","9","10","Jack", "Queen", "King", "Ace"},
+	public	static String[][] cards={{"2","3","4","5","6","7","8","9","10","Jack", "Queen", "King", "Ace"},
 			{"2","3","4","5","6","7","8","9","10","Jack", "Queen", "King", "Ace"},
 			{"2","3","4","5","6","7","8","9","10","Jack", "Queen", "King", "Ace"},
 			{"2","3","4","5","6","7","8","9","10","Jack", "Queen", "King", "Ace"},};
 
-	static Queue<String> queue=new Queue<String>();
+	public static Queue<String> queue=new Queue<String>();
 	/**
 	 * 	cradShuffle method will shuffle cards using  Random class
 	 */
@@ -419,7 +419,7 @@ public class Util {
 					System.out.println(doctorName+" "+doctorId+" "+doctorSpecialist+" "+doctorAvail);
 				}
 			}
-		break;
+			break;
 		case 3:
 			System.out.println("Please enter doctor Specialist:");
 			parameterMatch=scanner.next();
@@ -433,7 +433,7 @@ public class Util {
 					System.out.println(doctorName+" "+doctorId+" "+doctorSpecialist+" "+doctorAvail);
 				}
 			}
-		break;
+			break;
 		case 4:
 			System.out.println("Please enter doctor Availability:");
 			parameterMatch=scanner.next();
@@ -447,7 +447,7 @@ public class Util {
 					System.out.println(doctorName+" "+doctorId+" "+doctorSpecialist+" "+doctorAvail);
 				}
 			}
-		break;
+			break;
 		default:System.out.println("invalid input");
 		break;
 		}
@@ -540,7 +540,7 @@ public class Util {
 			}
 		}
 		break;
-		
+
 		case 2:System.out.println("Please enter patient Id:");
 		parameterMatch=scanner.next();
 		for(int i=0;i<jsonArray2.size();i++) {
@@ -554,7 +554,7 @@ public class Util {
 			}
 		}
 		break;
-		
+
 		case 3:System.out.println("Please enter patient mobile number:");
 		parameterMatch=scanner.next();
 		for(int i=0;i<jsonArray2.size();i++) {
