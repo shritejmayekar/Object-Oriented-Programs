@@ -27,13 +27,14 @@ import com.bridgelabz.util.Util;
  */
 public class ClinicManagement {
 	public static Scanner scanner=new Scanner(System.in);
+	public static boolean flag=true;
 	public static void main(String[] args) throws IOException, ParseException {
 		Util clinicManagement=new Util();
 		clinicManagement.FileCreate();
 
 		while(true) {
 			System.out.print("\nMenu\n1.Add doctors\n2.dispay doctor\n3.Add patient\n4.display patient"
-					+ "\n5.search doctor\n6.take doctor appointment\n7.search patient\n8.Popular Doctor");
+					+ "\n5.search doctor\n6.take doctor appointment\n7.search patient\n8.Popular Doctor\n9.Exit");
 			switch (scanner.nextInt()) {
 			case 1:System.out.println("please enter doctors schedule for today");
 			clinicManagement.addDoctors();
@@ -58,6 +59,8 @@ public class ClinicManagement {
 			break;
 			case 8:System.out.println("Popular doctors");
 			clinicManagement.doctorPopular();
+			break;
+			case 9:flag=false;
 			break;
 			default:System.out.print("invalid");
 			break;

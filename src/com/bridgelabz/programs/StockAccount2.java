@@ -29,6 +29,7 @@ import com.bridgelabz.util.Stack;
  */
 public class StockAccount2 {
 	/*Declaration of variables */
+	public static boolean flag=true;
 	public static String filename,userFile,brokerFile,dateTime;
 	public static long totalValue;
 	public static long eachStock;
@@ -304,8 +305,15 @@ public class StockAccount2 {
 			}
 		}
 	}
-	public void save(String filename) {
-
+	/**
+	 * save method saves the file
+	 * @param filename
+	 * @throws IOException
+	 */
+	public void save(String filename) throws IOException {
+		FileWriter fileWriter=new FileWriter(filename);
+		fileWriter.write(filename.toString());
+		fileWriter.close();
 	}
 	/**
 	 * printReport method will print user as well as broker share report
@@ -336,9 +344,9 @@ public class StockAccount2 {
 		StockAccount2 stockAccount2=new StockAccount2();
 		userFile="user.json";
 		brokerFile="broker.json";
-		while(true) {
+		while(flag) {
 			System.out.println("\nMenu \n1.Account create\n2.Print Report\n3.buy share\n4.sell share"
-					+ "\n5.exit\n6.view List\n7.view Stack\n8.view queue\n");
+					+ "\n5.exit\n6.view List\n7.view Stack\n8.view queue\n9.exit\n");
 			switch (scanner.nextInt()) {
 			case 1:	System.out.println("Account Creation");
 			System.out.println("please enter filename with .json as extension");
@@ -369,6 +377,8 @@ public class StockAccount2 {
 			case 7:stack.display();
 			break;
 			case 8:queue.display();
+			break;
+			case 9:flag=false;
 			break;
 			default:System.out.println("invalid");
 			break;

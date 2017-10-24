@@ -23,7 +23,7 @@ import com.bridgelabz.util.Util;
  */
 public class AddressBook {
 	public static Scanner scanner=new Scanner(System.in);
-
+	public static boolean flag=true;
 	/**
 	 * main method will able to display menu for addressBook
 	 * @param args
@@ -34,9 +34,9 @@ public class AddressBook {
 
 		Util addressBook=new Util();
 		addressBook.AddressBook();
-		while(true) {
+		while(flag) {
 			System.out.println("\nMenu \n1.addPerson\n2.getPullnameOfPerson\n3.getOtherInformation\n4.getTitle"
-					+ "\n5.print\n6.Edit\n7.Search\n8.Delete\n9.SortByName\n10.sortByzip");
+					+ "\n5.print\n6.Edit\n7.Search\n8.Delete\n9.SortByName\n10.sortByzip\n11.Exit");
 			switch (scanner.nextInt()) {
 
 			case 1:	System.out.println("please enter first name,last name,address,city,state,pincode and mobile number:");
@@ -75,6 +75,8 @@ public class AddressBook {
 			case 10:System.out.println("sorted by zip");
 			addressBook.sortByZip();
 			addressBook.print();
+			break;
+			case 11:flag=false;
 			break;
 			default:System.out.println("Inavalid");
 			break;

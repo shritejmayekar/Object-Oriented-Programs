@@ -16,12 +16,11 @@ import com.bridgelabz.util.Util;
 public class InventoryManagement {
 	public static Scanner scanner=new Scanner(System.in);
 	public static int k;
+	public static boolean flag=true;
 	public static void main(String[] args) throws IOException, ParseException {
-
+		
 		InventoryFactory inventoryFactory=new InventoryFactory();
-		//Object[] object=new Object[10];
-		//	Object inventoryinventoryFactory.inventoryPrice();
-		while(true) {
+		while(flag) {
 			try {
 				System.out.println("Please choose option 1.Create inventory 2.getInventory prices 3.exit");
 				switch (scanner.nextInt()) {
@@ -33,7 +32,7 @@ public class InventoryManagement {
 				case 2: 
 					inventoryFactory.inventoryPrice();
 					break;
-				case 3:System.exit(0);
+				case 3:flag=false;
 				break;
 
 				default:

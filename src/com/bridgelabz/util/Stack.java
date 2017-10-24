@@ -91,16 +91,5 @@ public class Stack<E> {
 			newReferenece=newReferenece.link;
 		}
 		System.out.print("->"+newReferenece.data+"\n ");
-
 	}
-
-
-
-
-
-
 }
-
-
-
-

@@ -30,11 +30,11 @@ public class DeckOfCards {
 	 * 
 	 * 
 	 */
-
+	public static boolean flag=true;
 	public static Scanner scanner=new Scanner(System.in);
 	public static void main(String[] args) {
 
-		while(true) {
+		while(flag) {
 			System.out.println("\nOptions\n1.Get Cards to play\n2.Exit");
 			switch(scanner.nextInt()) {
 			case 1:	for(int j=0;j<4;j++) {
@@ -46,7 +46,7 @@ public class DeckOfCards {
 			}	
 
 			break;
-			case 2:System.exit(0);
+			case 2:flag=false;
 			break;
 
 			default:System.out.print("invalid ");
