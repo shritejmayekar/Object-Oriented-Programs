@@ -1,3 +1,16 @@
+
+package com.bridgelabz.util;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 /******************************************************************************
 
  *  
@@ -11,25 +24,16 @@
  *  @since   12-10-2017
  *
  ******************************************************************************/
-package com.bridgelabz.util;
-
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Scanner;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
 public class StockPortfolio {
 	public  int numberOfShare,totalValueOfStock,numberOfStock,sharePrice;
-	static long totalValue,eachStock;
-	static Object value;
+	public static long totalValue,eachStock;
+	public static Object value;
 	public  String  stockName;
-	static Scanner scanner=new Scanner(System.in);
+	public static Scanner scanner=new Scanner(System.in);
+	/**
+	 * addStock method will add stocks to account
+	 * @throws IOException
+	 */
 	public  void addStock() throws IOException {
 		JSONObject stocks=new JSONObject();
 		JSONArray shares=new JSONArray();
@@ -64,13 +68,29 @@ public class StockPortfolio {
 		fileWriter.close();
 
 	}
+	/**
+	 * valueOfEachStock method will gives the each stock value report
+	 * @param numberOfShare
+	 * @param sharePrice
+	 * @return
+	 */
 	public static long valueOfEachStock(Object numberOfShare,Object sharePrice) {
 
 		return (long)sharePrice*(long)numberOfShare;
 	}
+	/**
+	 * valueOfTotalStock method will calculates total stock value
+	 * @param sharePrice
+	 */
 	public static void valueOfTotalStock(Object sharePrice) {
 		totalValue=(long)sharePrice+totalValue;
 	}
+	/**
+	 * stockReports method show the report of stocks
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	public void stockReports() throws FileNotFoundException, IOException, ParseException {
 		JSONParser jsonParser=new JSONParser();
 		JSONObject jsonObject=new JSONObject();

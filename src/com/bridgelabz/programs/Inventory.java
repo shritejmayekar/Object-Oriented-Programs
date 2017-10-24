@@ -22,10 +22,10 @@ import org.json.simple.parser.ParseException;
 import com.bridgelabz.util.Util;
 
 public class Inventory {
-	static Scanner scanner=new Scanner(System.in);
-
+	public static Scanner scanner=new Scanner(System.in);
+	public static boolean flag=true;
 	public static void main(String[] args) throws IOException, ParseException  {
-		while(true) {
+		while(flag) {
 			System.out.println("\nMenu\n1.File create\n2.Inventory\n3.Display\n4.exit");
 			switch(scanner.nextInt()) {
 			case 1:Util.fileCreate();
@@ -34,7 +34,7 @@ public class Inventory {
 			break;
 			case 3:Util.display();
 			break;
-			case 4:System.exit(0);
+			case 4:flag=false;
 			break;
 			default:System.out.println("invalid");
 			break;

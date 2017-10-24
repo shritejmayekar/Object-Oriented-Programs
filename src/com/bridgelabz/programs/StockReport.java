@@ -20,11 +20,11 @@ import org.json.simple.parser.ParseException;
 import com.bridgelabz.util.StockPortfolio;
 
 public class StockReport {
-
-	static Scanner scanner=new Scanner(System.in);
+	public static boolean flag=true;
+	public static Scanner scanner=new Scanner(System.in);
 	public static void main(String[] args) throws IOException, ParseException {
 		StockPortfolio stockPortfolio=new StockPortfolio();
-		while(true) {
+		while(flag) {
 			System.out.println("Menu\n1.Add stocks\n2.Dispalay report\n3.exit");
 			switch (scanner.nextInt()) {
 			case 1:
@@ -33,7 +33,7 @@ public class StockReport {
 			case 2:
 				stockPortfolio.stockReports();
 				break;
-			case 3:System.exit(0);
+			case 3:flag=false;
 			break;
 
 			default:
