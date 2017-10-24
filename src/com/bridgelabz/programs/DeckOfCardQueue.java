@@ -21,7 +21,6 @@ public class DeckOfCardQueue {
 	public static void main(String[] args) {
 		try {
 			Util player=new Util();
-			Queue<Integer> queue=new Queue<>();
 			int j=1;
 			for(int i=0;i<4;i++) {
 				//queue.Enqueue(i+1);

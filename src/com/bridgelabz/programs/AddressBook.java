@@ -33,7 +33,7 @@ public class AddressBook {
 	public static void main(String[] args) throws IOException, ParseException {
 
 		Util addressBook=new Util();
-		addressBook.AddressBook();
+		addressBook.addressBook();
 		while(flag) {
 			System.out.println("\nMenu \n1.addPerson\n2.getPullnameOfPerson\n3.getOtherInformation\n4.getTitle"
 					+ "\n5.print\n6.Edit\n7.Search\n8.Delete\n9.SortByName\n10.sortByzip\n11.Exit");

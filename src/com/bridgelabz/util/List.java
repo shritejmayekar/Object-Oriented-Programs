@@ -25,8 +25,8 @@ class NodeList<T>{
 	}
 }
 public class List<T>{
-	NodeList start;
-	NodeList end;
+	public NodeList start;
+	public NodeList end;
 	public int size;
 
 	public List() {

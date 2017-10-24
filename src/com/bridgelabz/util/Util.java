@@ -720,7 +720,7 @@ public class Util {
 	 * AdressBook method create address book and initialize
 	 * @throws IOException
 	 */
-	public void AddressBook() throws IOException {
+	public void addressBook() throws IOException {
 		File file=new File("addressBook.json");
 		if(file.createNewFile())
 			System.out.println("success");

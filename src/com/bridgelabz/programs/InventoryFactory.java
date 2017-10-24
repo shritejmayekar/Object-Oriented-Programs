@@ -20,7 +20,7 @@ import org.json.simple.parser.ParseException;
  *
  */
 public class InventoryFactory {
-
+	public static Scanner scanner=new Scanner(System.in);
 	/**
 	 *{@link InventoryFactory} method will create .json  file if not exist
 	 * @throws IOException
@@ -41,39 +41,35 @@ public class InventoryFactory {
 	 * @throws IOException
 	 * @throws ParseException 
 	 * */
-	Object	inventory() throws IOException, ParseException {
+	public Object	inventory() throws IOException, ParseException {
 		JSONArray product=new JSONArray();
-		JSONParser jsonParser=new JSONParser();
-
 
 		JSONObject inventory=new JSONObject();
 
-		
-		Scanner scanner=new Scanner(System.in);
 		System.out.println("please enter size of Inventory:");
 
 		int sizeOf=scanner.nextInt();
 		BufferedReader bufferedReader=new BufferedReader(new FileReader("/home/bridgeit/shritej/inventoryfactory.json"));
 		if(bufferedReader.readLine()==null) {
-		for(int size=0;size<sizeOf;size++) {
+			for(int size=0;size<sizeOf;size++) {
 
-			JSONObject jsonObject=new JSONObject();
-			System.out.println("enter the name of inventory");
-			jsonObject.put("name", scanner.next());
-			System.out.println("enter the quantity");
-			jsonObject.put("quantity", scanner.nextInt());
-			System.out.println("enter the price");
+				JSONObject jsonObject=new JSONObject();
+				System.out.println("enter the name of inventory");
+				jsonObject.put("name", scanner.next());
+				System.out.println("enter the quantity");
+				jsonObject.put("quantity", scanner.nextInt());
+				System.out.println("enter the price");
 
-			jsonObject.put("price", scanner.nextInt());
-			product.add(jsonObject);
-		}
+				jsonObject.put("price", scanner.nextInt());
+				product.add(jsonObject);
+			}
 
-		inventory.put("inventory", product);
+			inventory.put("inventory", product);
 		}
 		else {
-			
+
 			JSONObject jsonObject=new JSONObject();
-			
+
 			JSONParser jParser=new JSONParser();
 			jsonObject=(JSONObject) jParser.parse(new FileReader("/home/bridgeit/shritej/inventoryfactory.json"));
 			JSONArray jsonArray=(JSONArray) jsonObject.get("inventory");
@@ -88,7 +84,7 @@ public class InventoryFactory {
 
 				jsonObjectGet.put("price", scanner.nextInt());
 				jsonArray.add(jsonObjectGet);
-			
+
 			}
 			inventory.put("inventory",jsonArray);
 

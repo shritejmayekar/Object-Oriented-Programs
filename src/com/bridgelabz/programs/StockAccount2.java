@@ -310,9 +310,9 @@ public class StockAccount2 {
 	 * @param filename
 	 * @throws IOException
 	 */
-	public void save(String filename) throws IOException {
+	public void save(String filename,JSONObject jsonObject) throws IOException {
 		FileWriter fileWriter=new FileWriter(filename);
-		fileWriter.write(filename.toString());
+		fileWriter.write(jsonObject.toJSONString());
 		fileWriter.close();
 	}
 	/**

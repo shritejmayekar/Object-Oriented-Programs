@@ -41,7 +41,7 @@ public class InventoryManagement {
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				System.exit(0);
+				flag=false;
 			}
 		}
 

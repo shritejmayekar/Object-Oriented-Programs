@@ -5,8 +5,8 @@ package com.bridgelabz.util;
  */
 class Node<E>
 {
-	E data;
-	Node link;
+	public E data;
+	public Node link;
 
 	/*  Constructor  */
 	public Node()
@@ -26,7 +26,7 @@ class Node<E>
  *	Stack class of Generic type
  */
 public class Stack<E> {
-	Node top;
+	public Node top;
 	public int size;
 	/*  Constructor  */
 	public Stack() {

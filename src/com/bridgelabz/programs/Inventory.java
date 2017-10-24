@@ -22,7 +22,7 @@ import org.json.simple.parser.ParseException;
 import com.bridgelabz.util.Util;
 
 public class Inventory {
-	static Scanner scanner=new Scanner(System.in);
+	public static Scanner scanner=new Scanner(System.in);
 	public static boolean flag=true;
 	public static void main(String[] args) throws IOException, ParseException  {
 		while(flag) {
